@@ -1,0 +1,49 @@
+# Default values for beymen-order-edespatch-consumer.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  repository: beymenacr.azurecr.io/bg-express-api
+  tag: 1
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP 
+  port: 8080
+
+beymen:
+  environment: Production
+
+hpa:
+  enabled: true
+  minReplicas: 2 
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 50
+
+resources: 
+  limits:
+   cpu: 200m
+   memory: 256Mi
+  requests:
+   cpu: 100m
+   memory: 128Mi
+
+ingress:
+  enabled: true
+  spec:
+    - ingressClassName: it-nginx
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-forwarded-headers: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+  hosts:
+    - name: prod.internal.it.api.beymen.com
+      paths:
+        - pathUrl: /express-api(/|$)(.*)
+          serviceName: bg-express-api
+          servicePort: 8080
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local

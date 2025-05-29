@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BG.Express.API", "src/BG.Express.API\BG.Express.API.csproj", "{332C1B8A-09DF-4081-A2C9-A4088250A689}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{332C1B8A-09DF-4081-A2C9-A4088250A689}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{332C1B8A-09DF-4081-A2C9-A4088250A689}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{332C1B8A-09DF-4081-A2C9-A4088250A689}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{332C1B8A-09DF-4081-A2C9-A4088250A689}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DB3F9773-A961-402D-9CC0-19664CDDBA13}
+	EndGlobalSection
+EndGlobal

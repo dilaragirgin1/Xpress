@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "bg-express-api.name" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "bg-express-api.name" . }}
+    helm.sh/chart: {{ include "bg-express-api.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "bg-express-api.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "bg-express-api.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      {{- if eq .Values.beymen.environment "Production"}}
+      terminationGracePeriodSeconds: 30
+      {{- end}}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: {{ .Values.beymen.environment }}
+          - name: DEPLOYMENT_INFO
+            value: {{.Chart.Version}}          
+          - name: ConnectionStrings__DefaultConnection
+            valueFrom:
+              secretKeyRef:
+                name: bg-express-db
+                key: connectionstring
+                {{- if eq .Values.beymen.environment "Production"}}
+                optional: false
+                {{- else}}
+                optional: true
+                {{- end}}
+          - name: AmqpSettings__Host
+            valueFrom:
+              secretKeyRef:
+                name: beymen-it-rabbitmq
+                key: host
+                {{- if eq .Values.beymen.environment "Production"}}
+                optional: false
+                {{- else}}
+                optional: true
+                {{- end}}
+          - name: AmqpSettings__Username
+            valueFrom:
+              secretKeyRef:
+                name: beymen-it-rabbitmq
+                key: username
+                {{- if eq .Values.beymen.environment "Production"}}
+                optional: false
+                {{- else}}
+                optional: true
+                {{- end}}
+          - name: AmqpSettings__Password
+            valueFrom:
+              secretKeyRef:
+                name: beymen-it-rabbitmq
+                key: password
+                {{- if eq .Values.beymen.environment "Production"}}
+                optional: false
+                {{- else}}
+                optional: true
+                {{- end}}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 10
+            timeoutSeconds: 3
+            periodSeconds: 10
+            failureThreshold: 2
+          readinessProbe:
+            httpGet:
+              path: /healthcheck
+              port: http
+            initialDelaySeconds: 10
+            timeoutSeconds: 5
+            periodSeconds: 10
+            failureThreshold: 2
+          resources:
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
