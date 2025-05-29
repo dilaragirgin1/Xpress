@@ -8,8 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
-    <PackageReference Include="Beymen.IT.Package.EntityFrameworkCore" Version="1.8.9" />
-    <PackageReference Include="Beymen.IT.Package.ExceptionHandling" Version="3.0.4" />
+    <PackageReference Include="" Version="1.8.9" />
+    <PackageReference Include="" Version="3.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
